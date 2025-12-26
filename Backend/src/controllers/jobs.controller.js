@@ -13,7 +13,7 @@ const createJob = (async (req, res) =>{
         })
     }
 
-    const job = Job.create({
+    const job = await Job.create({
         title,
         schedule,
         api,
@@ -22,7 +22,12 @@ const createJob = (async (req, res) =>{
         lastRunAt,
         status
     })
-    return res.status(201).json({message:"Job created succesfully!"},job);
+
+
+    return res.status(201).json({
+        message: "Job created successfully!",
+        job: job
+    });
 })
 
 

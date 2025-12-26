@@ -3,7 +3,7 @@ import router from "./routes/jobs.routes.js";
 
 const app = express();
 
- 
+app.use(express.json());
 app.get("/", (req, res) => {
     console.log("API hit");
     res.send("Welcome to Job schedule management System API");
