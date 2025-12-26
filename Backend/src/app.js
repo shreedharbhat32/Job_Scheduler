@@ -6,7 +6,7 @@ const app = express();
  
 app.get("/", (req, res) => {
     console.log("API hit");
-    res.send("Welcome to the Library  Management System API");
+    res.send("Welcome to Job schedule management System API");
 });
 
 
