@@ -1,6 +1,7 @@
 import cron from 'node-cron';
 import {Job } from '../models/jobs.models.js';
 import {JobExecution} from '../models/jobs.executions.js';
+import { alertOnJobFailure } from './alert.utils.js';
 
 const activeSchedules = new Map();
 
@@ -52,7 +53,7 @@ const executeJob = async (job) => {
     }
 
     try {
-        await JobExecution.create({
+        const execution = await JobExecution.create({
             jobId: job._id,
             scheduledTime: scheduledTime,
             actualStartTime: actualStartTime,
@@ -66,6 +67,16 @@ const executeJob = async (job) => {
         await Job.findByIdAndUpdate(job._id, {
             lastRunAt: actualStartTime
         });
+
+        if (status === 'FAILED') {
+            await alertOnJobFailure(job, {
+                errorMessage: errorMessage,
+                responseCode: responseCode,
+                durationMs: durationMs,
+                scheduledTime: scheduledTime,
+                actualStartTime: actualStartTime
+            });
+        }
     } catch (error) {
         console.error('Error saving job execution:', error);
     }
