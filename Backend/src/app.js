@@ -1,8 +1,12 @@
 import express from "express";
 import router from "./routes/jobs.routes.js";
+import scheduled from "./utils/cron.utils.js";
+
 
 const app = express();
 
+
+//scheduled.start();
 app.use(express.json());
 app.get("/", (req, res) => {
     console.log("API hit");

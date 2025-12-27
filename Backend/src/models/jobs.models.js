@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 const jobSchema = new mongoose.Schema({
     title:{
         type: String,
+        unique: true,
+        required: true
     },
     schedule: {
         type:String,    
