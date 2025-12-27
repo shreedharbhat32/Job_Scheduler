@@ -26,59 +26,53 @@ The scheduler is designed to support thousands of job executions per second, whe
 
 ## Architecture
 
-The project follows a modular architecture with separation of concerns:
+### System Architecture Overview
 
--   **Backend/src/api**: Controllers and Routes for exposing APIs.
--   **Backend/src/executor**: Logic for executing the HTTP jobs (Worker processes).
--   **Backend/src/scheduler**: Core logic for parsing CRON specs and triggering jobs.
--   **Backend/src/db**: Database connection and Interface layers.
+```mermaid
+graph LR
+    A[User/Client] -->|HTTP Requests| B[Express API Server]
+    B -->|Store/Query| C[(MongoDB)]
+    B -->|Schedule Jobs| D[Cron Scheduler]
+    D -->|Read Jobs| C
+    D -->|Execute| E[Job Executor]
+    E -->|HTTP POST| F[External APIs]
+    E -->|Save Results| C
+    E -->|Alerts| G[Alert System]
+    
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style C fill:#e8f5e9
+    style D fill:#f3e5f5
+    style E fill:#fce4ec
+    style F fill:#fff9c4
+    style G fill:#ffebee
+```
 
-### System Design Diagram
-sequenceDiagram
-    participant U as User
-    participant A as API Server
-    participant D as Database
-    participant S as Scheduler
-    participant Q as Job Queue
-    participant E as Executor
-    participant X as External Service
+### Component Overview
 
-    U->>A: Create Job
-    A->>D: Store Job Details
-    D-->>A: Job Saved
-    A-->>U: Job ID Returned
-
-    S->>D: Check Scheduled Jobs
-    D-->>S: Due Jobs List
-    S->>Q: Push Job to Queue
-
-    E->>Q: Fetch Job
-    Q-->>E: Job Data
-    E->>X: Send HTTP Request
-    X-->>E: Response Data
-
-    E->>D: Store Execution Result
-
-    U->>A: Request Job Status
-    A->>D: Fetch Job Logs
-    D-->>A: Status and Logs
-    A-->>U: Job Status Response
+- **Express API Server**: Handles HTTP requests for job management (Create, Update, Delete, View)
+- **MongoDB**: Stores job definitions and execution history
+- **Cron Scheduler**: Monitors active jobs and triggers executions based on CRON schedules
+- **Job Executor**: Executes HTTP requests to external APIs and records results
+- **Alert System**: Monitors job failures and sends alerts
 
 
 ## Folder Structure
 ```
-Job_Scheduler/
+Job_scheduler/
 ├── Backend/
 │   ├── src/
-│   │   ├── api/        # API Routes and Controllers
-│   │   ├── db/         # Database Connection and Models
-│   │   ├── executor/   # Job Execution Logic
-│   │   ├── scheduler/  # Scheduling Logic
-│   │   └── app.js      # Express Application Setup
-│   ├── .env            # Environment Variables
-│   ├── index.js        # Entry Point
-│   └── package.json    # Dependencies
-└── README.md
+│   │   ├── controllers/    # Job management controllers
+│   │   ├── routes/        # API route definitions
+│   │   ├── models/        # Database models (Jobs, JobExecutions)
+│   │   ├── utils/         # Cron scheduler and alert utilities
+│   │   ├── db/            # Database connection
+│   │   └── app.js         # Express application setup
+│   ├── index.js           # Application entry point
+│   ├── job_creation.js    # Test job generator script
+│   ├── package.json       # Dependencies
+│   └── .env               # Environment variables
+└── Readme.md
 ```
 
 ## Getting Started
@@ -106,7 +100,7 @@ Job_Scheduler/
 ### Running the Server
 ```bash
 npm start
-# Server runs on Port 5000 by default
+# Server runs on Port 3000 by default
 ```
 
 ## API Documentation (Planned)
@@ -141,8 +135,24 @@ npm start
 -   Basic logging is implemented with console logs.
 -   Future enhancements include metric collection (Prometheus) and distributed tracing.
 
-## Deliverables
-1.  Source Code
-2.  Architecture Diagram (Above)
-3.  This README
-4.  Sample Dataset (To be added)
+## Sample Dataset
+    [
+        {
+            "schedule": "* * * * *",
+            "api": "https://api.example.com/ping",
+            "type": "ATLEAST_ONCE",
+            "description": "Ping every minute"
+        },
+        {
+            "schedule": "*/5 * * * * *",
+            "api": "https://api.example.com/data-sync",
+            "type": "ATLEAST_ONCE",
+            "description": "Sync data every 5 seconds"
+        },
+        {
+            "schedule": "0 0 12 * * *",
+            "api": "https://api.example.com/daily-report",
+            "type": "ATLEAST_ONCE",
+            "description": "Daily report at noon"
+        }
+    ]
