@@ -20,7 +20,7 @@ const jobSchema = new mongoose.Schema({
         type:Date, 
     },         
     status: {
-        type:String,                // "ACTIVE" | "PAUSED" | "DELETED"
+        type:String,
     },
    createdAt: Date,
    updatedAt: Date

@@ -1,29 +1,47 @@
 import mongoose from "mongoose";
 
 const jobexecutionSchema = new mongoose.Schema({
-    _id:{
-        type: ObjectId,
-        required: true,
-        unique:true
-    } ,
-    jobId: ObjectId,               // reference to jobs._id
+    jobId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Job',
+        required: true
+    },
 
-    scheduledTime: Date,           
-    actualStartTime: Date,         
+    scheduledTime: {
+        type: Date,
+        required: true
+    },
+    actualStartTime: {
+        type: Date,
+        required: true
+    },
 
-    status: String,                // "SUCCESS" | "FAILED"
-    responseCode:{
-       type: Number,  
-       required:true,     
-    } ,
-    durationMs: Number,            // execution time
+    status: {
+        type: String,
+        enum: ["SUCCESS", "FAILED", "PENDING"],
+        required: true
+    },
+    responseCode: {
+        type: Number,
+        required: false
+    },
+    durationMs: {
+        type: Number,
+        required: false
+    },
 
-    attempt: Number,               // retry count (for AT_LEAST_ONCE)
+    attempt: {
+        type: Number,
+        default: 1
+    },
 
-    errorMessage: String,          // failure reason (optional)
-
-    createdAt: Date
+    errorMessage: {
+        type: String,
+        required: false
+    }
     
+}, {
+    timestamps: true
 })
 
 
