@@ -1,13 +1,13 @@
-# High-Throughput Job Scheduler
+# High-Throughput Job Scheduler (B1.0)
 
 ## Problem Statement
 Design and implement a simple yet scalable Job Scheduler capable of executing a large number of scheduled jobs with high accuracy and reliability.
 
 ## System Overview
 The system supports:
-1.  **Job Management**: Create, modify, and view jobs.
+1.  **Job Management**: Create, modify, and delete jobs.
 2.  **Execution Tracking**: View instance runs of jobs.
-3.  **Alerting**: Alert users on job failure (Planned).
+3.  **Alerting**: Alert users on job failure.
 
 The scheduler is designed to support thousands of job executions per second, where each job represents an HTTP POST request to an external API.
 
@@ -103,10 +103,10 @@ npm start
 # Server runs on Port 3000 by default
 ```
 
-## API Documentation (Planned)
+## API Documentation
 
 ### 1. Create Job
--   **Endpoint**: `POST /jobs`
+-   **Endpoint**: `POST /create-jobs`
 -   **Body**:
     ```json
     {
@@ -118,7 +118,7 @@ npm start
 -   **Response**: `{ "jobId": "unique_id_123" }`
 
 ### 2. Get Job Executions
--   **Endpoint**: `GET /jobs/:jobId/executions`
+-   **Endpoint**: `GET /getjob-executions`
 -   **Description**: Fetch last 5 executions.
 -   **Response**:
     ```json

@@ -33,12 +33,12 @@ const createjob = async()=>{
 
         await Job.insertMany(jobs);
 
-        console.log("✅ 1000 jobs created successfully");
+        console.log(" 1000 jobs created successfully");
         await mongoose.connection.close();
         process.exit(0);
 
     } catch (err) {
-        console.error("❌ Error happened:", err);
+        console.error(" Error happened:", err);
         await mongoose.connection.close();
         process.exit(1);
     }

@@ -5,8 +5,6 @@ import scheduled from "./utils/cron.utils.js";
 
 const app = express();
 
-
-//scheduled.start();
 app.use(express.json());
 app.get("/", (req, res) => {
     console.log("API hit");

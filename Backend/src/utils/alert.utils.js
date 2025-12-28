@@ -15,11 +15,11 @@ const alertOnJobFailure = async (job, executionDetails) => {
             actualStartTime: executionDetails.actualStartTime
         };
 
-        console.error('🚨 JOB FAILURE ALERT:', JSON.stringify(alertMessage, null, 2));
+        console.error(' JOB FAILURE ALERT:', JSON.stringify(alertMessage, null, 2));
 
         const recentFailures = await getRecentFailureCount(job._id, 5);
         if (recentFailures >= 3) {
-            console.error(`⚠️ CRITICAL: Job "${job.title}" has failed ${recentFailures} times in recent executions!`);
+            console.error(`CRITICAL: Job "${job.title}" has failed ${recentFailures} times in recent executions!`);
         }
 
     } catch (error) {
