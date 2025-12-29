@@ -135,6 +135,9 @@ npm start
 -   Basic logging is implemented with console logs.
 -   Future enhancements include metric collection (Prometheus) and distributed tracing.
 
+##Sample Video link 
+- https://drive.google.com/file/d/1NEpln1hY5Ssth1HBlGWJD6cFNzhnI_bM/view?usp=drive_web
+
 ## Sample Dataset
     [
         {
